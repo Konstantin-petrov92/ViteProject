@@ -1,43 +1,41 @@
-import Header from "./conmponents/Header";
-import WatToTeach from "./conmponents/WatToTeach";
-import { ways } from "./data";
+import Header from "./conmponents/Header/Header";
+import TeachingSection from "./conmponents/ComponentsTichengSection";
+import AddButton from "./conmponents/AddButton";
+import IntroSelection from "./conmponents/IntroSelection";
+import TabSection from "./conmponents/TabSection";
+import FeedBackSection from "./conmponents/FeedBackSection";
+import { useState } from "react";
+import EffectSection from "./conmponents/EffectSection";
+
+//Для того, что бы можно было обходиться без div который оборарчивает всю конструкцию (т.к. ретёрнить можно только один элемент) используем подключение Fragment, который позвоняет возвращать все элементы без потерь
+// import { Fragment } from "react";
+//Однако можно воспользоваться движком React, который позволяет нам просто обойтись открывающися и закрывающимся тегом (<></>)
 
 export default function App() {
+  const [tab, setTab] = useState("effect");
+  // const stateArray = useState(); //useState() (и прочие хуки (hook) можно использовать только на вернем уровне компонента (сразу после App))
+
+  //При помощи диструктуризации мы может обращаться ко второму параметру State (которое по умолчанию есть)
+
   return (
-    <div>
+    <>
       <Header />
 
       <main>
-        <section>
-          <h3>Как будет проходить диагностика</h3>
-          <ul>
-            <WatToTeach
-              title={ways[0].title}
-              description={ways[0].description}
-            />
+        <IntroSelection />
 
-            <WatToTeach
-              title={ways[1].title}
-              description={ways[1].description}
-            />
+        <TabSection active={tab} onChange={(current) => setTab(current)} />
 
-            <WatToTeach {...ways[2]} />
+        {tab == "main" && (
+          <>
+            <TeachingSection />
+            <AddButton />
+          </>
+        )}
 
-            <WatToTeach
-              title={ways[3].title}
-              description={ways[3].description}
-            />
-            <li>
-              <p>
-                <strong>JavaScript.</strong>Сделаем акцент на JavaScript,
-                поскольку это важнейший инструмент разработчика. В соответствии
-                с вашим опытом оценим теоретические знания языка и его
-                особенности.
-              </p>
-            </li>
-          </ul>
-        </section>
+        {tab == "feetback" && <FeedBackSection />}
+        {tab == "effect" && <EffectSection />}
       </main>
-    </div>
+    </>
   );
 }
